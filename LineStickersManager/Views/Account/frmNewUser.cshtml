@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+ 
+@{
+    if (!string.IsNullOrEmpty(ViewBag.Info))
+    {
+        @:<span style="color: red;">@ViewBag.Info</span>
+    }
+}
+
+
+<form class="form-signin" action="/Account/Create" method="post">
+    <input type="text" name="LineID" class="form-control" placeholder="Line ID" required="" autofocus="">
+    <input type="password" name="Password" class="form-control" placeholder="密碼" required="">
+    <input type="text" name="Name" class="form-control" placeholder="姓名" required="" autofocus="">
+    <input type="email" name="Email" class="form-control" placeholder="E-mail" required="" autofocus="">(填入正確的E-mail就可以收到最新通知喔!)
+    <input type="tel" name="PhoneNumber" class="form-control" placeholder="手機號碼" required="" autofocus="">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">送出</button>
+    <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+</form>
