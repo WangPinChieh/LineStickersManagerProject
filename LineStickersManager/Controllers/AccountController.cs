@@ -14,6 +14,9 @@ namespace LineStickersManager.Controllers
         // GET: Account
         public ActionResult Index()
         {
+            if (this.User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Main");
+
             return View("frmAccount");
         }
         public ActionResult NewUser()
@@ -90,6 +93,10 @@ namespace LineStickersManager.Controllers
                 
             }
             return View("frmAccount");
+        }
+        public ActionResult Logout() {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Account");
         }
     }
 }

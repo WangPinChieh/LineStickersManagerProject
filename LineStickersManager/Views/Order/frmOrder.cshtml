@@ -1,0 +1,25 @@
+﻿<div ng-app="OrderApp" ng-controller="OrderCtrl">
+    <form action="/Order/NewOrder" method="post">
+        <select ng-model="selectedProduct" ng-change="selectionChanged(selectedProduct.Description)" ng-options="x.Text for x in products" class="form-control">
+        </select>
+        <div id="descriptionDiv">
+            <div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+    var app = angular.module('OrderApp', []);
+    app.controller('OrderCtrl', function ($scope) {
+        $scope.products = @Html.Raw(ViewBag.ProductList);
+        $scope.selectionChanged = function(desc){
+            $('#descriptionDiv div').remove();
+            $('#descriptionDiv').append('<div>' + desc + '</div>');
+        }
+    });
+
+</script>
