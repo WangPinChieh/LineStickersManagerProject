@@ -11,8 +11,13 @@
     }
 }
 
-
-<form class="form-signin" action="/Account/Create" method="post">
+@{
+    if (!string.IsNullOrEmpty(ViewBag.Info))
+    {
+        @:<span style="color: red;">@ViewBag.Info</span>
+    }
+}
+<form class="form-signin" action="/Account/CreateUser" method="post">
     <input type="text" name="LineID" class="form-control" placeholder="Line ID" required="" autofocus="">
     <input type="password" name="Password" class="form-control" placeholder="密碼" required="">
     <input type="text" name="Name" class="form-control" placeholder="姓名" required="" autofocus="">

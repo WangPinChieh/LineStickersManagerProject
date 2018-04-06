@@ -15,8 +15,8 @@ namespace Helpers
             using (DESCryptoServiceProvider _Des = new DESCryptoServiceProvider())
             {
                 byte[] _StringToBeEncrypted = Encoding.UTF8.GetBytes(password);
-                byte[] _Key = Encoding.UTF8.GetBytes("37908865-F1F1-43CF-AC2A-DF6B849AEB2D");
-                byte[] _IV = Encoding.UTF8.GetBytes("FDDB62A8-BA35-4EEC-8797-2712331D1195");
+                byte[] _Key = Encoding.UTF8.GetBytes("Line@Jay");
+                byte[] _IV = Encoding.UTF8.GetBytes("ICRT@Jay");
                 _Des.Key = _Key;
                 _Des.IV = _IV;
 

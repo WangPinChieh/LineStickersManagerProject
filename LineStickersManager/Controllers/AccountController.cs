@@ -12,12 +12,12 @@ namespace LineStickersManager.Controllers
     public class AccountController : Controller
     {
         // GET: Account
-        [AllowAnonymous]
         public ActionResult Index()
         {
             return View("frmAccount");
         }
-        public ActionResult NewUser() {
+        public ActionResult NewUser()
+        {
             return View("frmNewUser");
         }
         [HttpPost]
@@ -37,7 +37,14 @@ namespace LineStickersManager.Controllers
                 if (EncryptionHelper.EncryptPassword(inputPassword) == _User.Password)
                 {
                     _Info = "登入成功";
-                    FormsAuthentication.SetAuthCookie(inputLineID, false);
+                    /*Method 1*/
+                    FormsAuthenticationTicket _FormsAuthenticationTicket = new FormsAuthenticationTicket(1, inputLineID, DateTime.Now, DateTime.Now.AddMinutes(30), false, inputLineID, FormsAuthentication.FormsCookiePath);
+                    string _Ticket = FormsAuthentication.Encrypt(_FormsAuthenticationTicket);
+                    HttpCookie _Cookie = new HttpCookie(FormsAuthentication.FormsCookieName, _Ticket);
+                    Response.Cookies.Add(_Cookie);
+                    /*Method 2*/
+                    //FormsAuthentication.SetAuthCookie(inputLineID, false);
+                    return RedirectToAction("Index", "Main");
                 }
                 else
                     _Info = "密碼錯誤";
@@ -45,6 +52,43 @@ namespace LineStickersManager.Controllers
 
 
             ViewBag.Info = _Info;
+            return View("frmAccount");
+        }
+        public ActionResult CreateUser(tblUser user)
+        {
+            ViewBag.Info = string.Empty;
+            if (user != null)
+            {
+                #region 資料驗證
+                if (
+                    string.IsNullOrEmpty(user.LineID) ||
+                    string.IsNullOrEmpty(user.Password) ||
+                    string.IsNullOrEmpty(user.Name) ||
+                    string.IsNullOrEmpty(user.PhoneNumber)
+                   )
+                {
+                    ViewBag.Info = "資料驗證錯誤!";
+                    return View("frmNewUser");
+                }
+                #endregion
+
+                LineStickersManagerEntities db = new LineStickersManagerEntities();
+                if (db.tblUsers.Any(m => m.LineID == user.LineID))
+                {
+                    ViewBag.Info = "相同的Line ID已存在, 請登入。";
+                    return View("frmAccount");
+                }
+                else
+                {
+                    user.Password = EncryptionHelper.EncryptPassword(user.Password);
+                    user.ModiTime = DateTime.Now;
+                    db.tblUsers.Add(user);
+                    db.SaveChanges();
+                    ViewBag.Info = "帳號註冊成功，請登入。";
+                    return View("frmAccount");
+                }
+                
+            }
             return View("frmAccount");
         }
     }
