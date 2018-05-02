@@ -207,6 +207,7 @@
     <Compile Include="Models\tblUser.cs">
       <DependentUpon>LineStickersManagerEF.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UploadFilesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

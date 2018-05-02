@@ -20,14 +20,28 @@ namespace LineStickersManager.Controllers
             {
                 var _SelectItems = (from d 
                                     in db.tblProducts
+                                    where d.ValidateDateTime >= DateTime.Now
                                     select new {
                                         Text = d.Name,
                                         Value = d.ID.ToString(),
-                                        Description = d.Desc
+                                        Description = d.Desc,
+                                        Price = d.Price
                                     }).ToList();
                 ViewBag.ProductList = JsonConvert.SerializeObject(_SelectItems);
             }
             return View("frmOrder");
+        }
+        [HttpPost]
+        public ActionResult UploadFiles(UploadFilesModel uploadFilesModel) {
+            ViewBag.Info = string.Empty;
+            if (Request.Files != null && Request.Files.Count > 0)
+            { }
+            else
+            {
+
+            }
+
+            return Json("");
         }
     }
 }
