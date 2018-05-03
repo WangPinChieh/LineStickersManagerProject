@@ -2,16 +2,16 @@
     <form action="/Order/UploadFiles" method="post" enctype="multipart/form-data">
         <select name="product" ng-model="selectedProduct" ng-change="selectionChanged(selectedProduct.Description)" ng-options="x.Text for x in products track by x.Value" class="form-control"></select>
         <div id="descriptionDiv">
-            <div>
-
-            </div>
+            <div></div>
         </div>
         <br />
         <br />
         <input id="files" type="file" name="files" multiple />
         <br />
         <br />
-        <img id="blah" src="#" alt="your image" />
+        <div id="imgPreview"><div id="imgPreviewContainer"></div></div>
+        <br />
+        <br />
         <button class="btn btn-lg btn-primary btn-block" type="submit">下一步</button>
     </form>
 </div>
@@ -28,21 +28,34 @@
         }
     });
 
-    function readURL(input) {
+    function readURL(targetID, file) {
 
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+        var reader = new FileReader();
 
-            reader.onload = function(e) {
-                $('#blah').attr('src', e.target.result);
+        reader.onload = function(e) {
+            var _TargetID = '#' + targetID;
+            if(_TargetID.indexOf('.') != -1)
+            {
+                _TargetID = _TargetID.split('.')[0] + '\\.' + _TargetID.split('.')[1];
             }
-
-            reader.readAsDataURL(input.files[0]);
+            $(_TargetID).attr('src', e.target.result);
         }
+
+        reader.readAsDataURL(file);
     }
     $(document).ready(function(){
         $('#files').change(function(){
-            readURL(this);
+            if(this.files.length > 0)
+            {
+                $('#imgPreview div').remove();
+                $('#imgPreview').append('<div id="imgPreviewContainer"></div>');
+                for(var i=0; i< this.files.length; i++)
+                {
+                    var _File = this.files[i];
+                    $('#imgPreviewContainer').append('<div><img id="' + _File.name + '" src="#"></img><input name="'+_File.name+'" type="text" placeholder="搭配文字"></input></div>');
+                    readURL(_File.name, _File);
+                }
+            }
         });
     });
 </script>
